@@ -26,15 +26,6 @@ cd ${TMP_DIR}
 # CPUs available
 CPU=$(nproc)
 
-# Determine which process to run
-#PROC=$1
-#CMD=$(egrep ^${PROC}: /Procfile | cut -f 2 -d ':')
-#if [[ -z ${CMD} ]]; then
-#  echo "Abort, no proc found for '${PROC}'."
-#  exit 1
-#fi
-#eval ${CMD}
-
 # Create shuffled fastq file from paired ends
 FASTQ=$(mktemp)
 zcat ${READS} | fastq_to_fasta -Q33 | paste - - | shuf | sed 's/\t/\n/' > ${FASTQ}
