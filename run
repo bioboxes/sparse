@@ -6,19 +6,10 @@ set -o nounset
 
 # The first argument is the location of the reads in the container filesystem.
 # The will be present in a read-only directory
-READS=$2
-
-# The second argument is a directory with write-access where the final
-# assembly should be written to.
-DIR=$3
+READS="$@"
 
 # The assembly should be written to the file "contigs.fa" in the output directory
-ASSEMBLY=$DIR/contigs.fa
-
-# Setup logging
-LOG=$DIR/log.txt
-exec > >(tee ${LOG})
-exec 2>&1
+OUTPUT=/bbx/output
 
 TMP_DIR=`mktemp -d`
 cd ${TMP_DIR}
@@ -36,4 +27,4 @@ GENOME_SIZE=60000000
 
 SparseAssembler g ${GAP_VALUE} k ${KMER_SIZE} LD ${LOAD_SKG} GS ${GENOME_SIZE} NodeCovTh ${NODE_COVERAGE_THRESHOLD} EdgeCovTh ${EDGE_COVERAGE_THRESHOLD} PathCovTh ${PATH_COVERAGE_THRESHOLD} f ${FASTQ}
 
-cp Contigs.txt ${ASSEMBLY}
+mv Contigs.txt ${OUTPUT}
